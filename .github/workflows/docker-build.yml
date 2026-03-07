@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Convert repo name to lowercase
-        run: echo "REP_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        run: echo "REPO_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -41,7 +41,7 @@ jobs:
         id: meta-go
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.REP_LC }}/app
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LC }}/app
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
@@ -64,7 +64,7 @@ jobs:
         id: meta-nginx
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.REP_LC }}/nginx
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LC }}/nginx
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
@@ -84,7 +84,7 @@ jobs:
 
       - name: Test the built images
         env:
-          REP: ${{ env.REP_LC }}
+          REPO: ${{ env.REPO_LC }}
           SHA: ${{ github.sha }}
         run: |
           docker compose -f docker-compose.test.yml up -d
