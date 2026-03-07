@@ -26,9 +26,6 @@ jobs:
       - name: Convert repository name to lowercase
         run: echo "REPO_LC=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - name: Show lowercase repo
-        run: echo "Using repo: $REPO_LC"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
