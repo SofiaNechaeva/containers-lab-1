@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository | toLower }}
 
 jobs:
   build:
@@ -82,7 +82,7 @@ jobs:
 
       - name: Test the built images
         env:
-          REP: ${{ github.repository }}
+          REP: ${{ github.repository | toLower }}
           SHA: ${{ github.sha }}
         run: |
           docker compose -f docker-compose.test.yml up -d
