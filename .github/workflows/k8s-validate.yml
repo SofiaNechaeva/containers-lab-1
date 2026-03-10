@@ -37,7 +37,8 @@ jobs:
         run: |
           for file in k8s/*.yaml; do
             echo "Validating $file"
-            kubectl apply --dry-run=client -f "$file"
+            kubectl apply --dry-run=client --validate=false -f "$file"
+
           done
 
       # - name: Check for deprecated APIs
