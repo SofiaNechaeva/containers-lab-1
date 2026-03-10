@@ -28,18 +28,28 @@ jobs:
         run: |
           kubeval --strict --ignore-missing-schemas k8s/*.yaml
 
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.28.0'
+      # - name: Install kubectl
+      #   uses: azure/setup-kubectl@v3
+      #   with:
+      #     version: 'v1.28.0'
 
-      - name: Dry-run apply
+      # - name: Dry-run apply
+      #   run: |
+      #     for file in k8s/*.yaml; do
+      #       echo "Validating $file"
+      #       kubectl create --dry-run=client --validate=false -f "$file"
+
+      #     done
+      - name: Install kubeconform
         run: |
-          for file in k8s/*.yaml; do
-            echo "Validating $file"
-            kubectl create --dry-run=client --validate=false -f "$file"
+          curl -L https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz \
+            | tar xz
+          sudo mv kubeconform /usr/local/bin/
 
-          done
+      - name: Validate manifests with kubeconform
+        run: |
+          kubeconform -strict -ignore-missing-schemas -summary k8s/
+
 
       # - name: Check for deprecated APIs
       #   uses: yannh/kubernetes-json-schema@master
