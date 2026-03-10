@@ -37,7 +37,7 @@ jobs:
       #   run: |
       #     for file in k8s/*.yaml; do
       #       echo "Validating $file"
-      #       kubectl create --dry-run=client --validate=false -f "$file"
+      #       kubectl create --dry-run=client --validate=false -f "$file" еее
 
       #     done
       - name: Install kubeconform
